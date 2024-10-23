@@ -63,7 +63,6 @@
 			"silverblue": [
 				"cryfs",
 				"gnome-shell-extension-appindicator",
-				"gnome-shell-extension-dash-to-dock",
 				"gnome-shell-extension-gsconnect",
 				"libgda",
 				"ibus-rime",
@@ -224,7 +223,9 @@
 			"silverblue": []
 		},
 		"exclude": {
-			"all":	[],
+			"all":	[
+				"cockpit-pcp"
+			],
 			"silverblue": [],
 			"kinoite": [
 				"plasma-welcome",
