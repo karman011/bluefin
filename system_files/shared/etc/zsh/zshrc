@@ -208,9 +208,9 @@ if [[ -o interactive ]] && [[ -d /home/linuxbrew/.linuxbrew ]]; then
 fi
 
 # Starship
-if type "starship" > /dev/null; then
-  eval "$(starship init zsh)"
-fi
+# if type "starship" > /dev/null; then
+#   eval "$(starship init zsh)"
+# fi
 
 #####################
 # User configuration
