@@ -91,6 +91,7 @@
 				"bcc",
 				"bpftop",
 				"bpftrace",
+				"cockpit-bridge",
 				"cockpit-machines",
 				"cockpit-networkmanager",
 				"cockpit-ostree",
