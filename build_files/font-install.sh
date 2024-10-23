@@ -9,5 +9,4 @@ if [[ "${BASE_IMAGE_NAME}" =~ "kinoite" ]]; then
     fc-cache -f /usr/share/fonts/fira-nf
 fi
 
-fc-cache -f /usr/share/fonts/ubuntu 
 fc-cache -f /usr/share/fonts/inter
