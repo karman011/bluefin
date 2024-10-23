@@ -26,6 +26,7 @@ on:
         value: ${{ jobs.check.outputs.images }}
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  BASE_IMAGE_REGISTRY: ghcr.io/ublue-os
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-${{ inputs.fedora_version }}
@@ -44,10 +45,10 @@ jobs:
         image_flavor:
           - main
           - nvidia
-          - asus
-          - asus-nvidia
-          - surface
-          - surface-nvidia
+          # - asus
+          # - asus-nvidia
+          # - surface
+          # - surface-nvidia
         base_name:
           - ${{ inputs.brand_name }}
           - ${{ inputs.brand_name }}-dx
@@ -345,10 +346,10 @@ jobs:
           command: |
             # pull the base image used for FROM in containerfile so
             # we can retry on that unfortunately common failure case
-            sudo podman pull ${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-${{ env.image_flavor }}:${{ env.fedora_version }}
-            sudo podman pull ${{ env.IMAGE_REGISTRY }}/akmods:${{ env.AKMODS_FLAVOR }}-${{ env.fedora_version }}
-            sudo podman pull ${{ env.IMAGE_REGISTRY }}/akmods-nvidia:${{ env.AKMODS_FLAVOR }}-${{ env.fedora_version }}
-            sudo podman pull ${{ env.IMAGE_REGISTRY }}/${{ env.AKMODS_FLAVOR }}-kernel:${{ env.kernel_release }}
+            sudo podman pull ${{ env.BASE_IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-${{ env.image_flavor }}:${{ env.fedora_version }}
+            sudo podman pull ${{ env.BASE_IMAGE_REGISTRY }}/akmods:${{ env.AKMODS_FLAVOR }}-${{ env.fedora_version }}
+            sudo podman pull ${{ env.BASE_IMAGE_REGISTRY }}/akmods-nvidia:${{ env.AKMODS_FLAVOR }}-${{ env.fedora_version }}
+            sudo podman pull ${{ env.BASE_IMAGE_REGISTRY }}/${{ env.AKMODS_FLAVOR }}-kernel:${{ env.kernel_release }}
 
       - name: Build Image
         id: build_image
@@ -477,7 +478,7 @@ jobs:
         env:
           TAGS: ${{ steps.push.outputs.outputs && fromJSON(steps.push.outputs.outputs).digest }}
           COSIGN_EXPERIMENTAL: false
-          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
 
       - name: Generate file containing outputs
         if: github.event_name != 'pull_request'
@@ -553,7 +554,7 @@ jobs:
   build_iso:
     name: iso
     needs: [check]
-    if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'main' || github.ref_name == 'testing') && inputs.fedora_version != 'beta' && inputs.fedora_version != 'latest'
+    if: (github.repository_owner == 'ublue-os') && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'main' || github.ref_name == 'testing') && inputs.fedora_version != 'beta' && inputs.fedora_version != 'latest'
     # Eventually would be nice for building images in PRs
     #if: ${{ endsWith(github.event.pull_request.title, '[ISO]') }}
     uses: ./.github/workflows/reusable-build-iso.yml
