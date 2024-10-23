@@ -29,10 +29,6 @@ sed -i 's/ContainerName=wolfi-quadlet/ContainerName=wolfi-toolbox/' /etc/contain
 curl -Lo /etc/containers/systemd/users/wolfi-dx-toolbox.container https://raw.githubusercontent.com/ublue-os/toolboxes/main/quadlets/wolfi-toolbox/wolfi-dx-distrobox-quadlet.container
 sed -i 's/ContainerName=wolfi-quadlet/ContainerName=wolfi-dx-toolbox/' /etc/containers/systemd/users/wolfi-dx-toolbox.container
 
-# Brew Integration for Fedora and Ubuntu Toolboxes
-printf "\nVolume=/home/linuxbrew:/home/linuxbrew:rslave\nVolume=/etc/profile.d/brew.sh:/etc/profile.d/brew.sh:ro\nVolume=/usr/share/fish/vendor_conf.d/brew.fish:/usr/share/fish/vendor_conf.d/brew.fish:ro\n" >> /etc/containers/systemd/users/ubuntu-toolbox.container
-printf "\nVolume=/home/linuxbrew:/home/linuxbrew:rslave\nVolume=/etc/profile.d/brew.sh:/etc/profile.d/brew.sh:ro\nVolume=/usr/share/fish/vendor_conf.d/brew.fish:/usr/share/fish/vendor_conf.d/brew.fish:ro\n" >> /etc/containers/systemd/users/fedora-toolbox.container
-
 # Make systemd targets 
 mkdir -p /usr/lib/systemd/user
 QUADLET_TARGETS=(
